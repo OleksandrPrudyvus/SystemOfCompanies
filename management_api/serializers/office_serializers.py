@@ -1,15 +1,11 @@
 from rest_framework import serializers
 from management_api.models import Office
+from management_api.utils import GetUserCompanyMixin
 
 
-class BaseOfficeSerializer(serializers.ModelSerializer):
+class BaseOfficeSerializer(GetUserCompanyMixin, serializers.ModelSerializer):
     company = serializers.HiddenField(default=None)
-    url = serializers.URLField(source='get_absolute_url')
-
-    def save(self, **kwargs):
-        self.company = self.context.get('request').user.company
-        kwargs['company'] = self.company
-        super().save(**kwargs)
+    url = serializers.URLField(source='get_absolute_url', required=False)
 
     class Meta:
         model = Office

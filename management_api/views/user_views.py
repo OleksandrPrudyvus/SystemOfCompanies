@@ -34,7 +34,7 @@ class WorkerListCreateApiView(generics.GenericAPIView):
     def get_queryset(self):
         return User.objects.all()
 
-
+# доробити
 class WorkerRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     serializer_class = BaseUserSerializer

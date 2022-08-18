@@ -1,17 +1,26 @@
-from rest_framework import generics
-from rest_framework.mixins import UpdateModelMixin
+from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-
 from management_api.models import Company
 from management_api.permissions import IsAdminOrWorkerReadOnly
 from management_api.serializers import CompanySerializer
 
 
-class CompanyCreateApiView(generics.CreateAPIView):
+class CompanyCreateApiView(generics.GenericAPIView):
     queryset = Company
     serializer_class = CompanySerializer
     permission_classes = (IsAuthenticated,)
+
+    def post(self, request, *args, **kwargs):
+        if request.user.is_company_admin_user:
+            return Response({'error': 'You already have a company'}, status=status.HTTP_409_CONFLICT)
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        company_id = Company.objects.latest('id').id
+        request.user.company_id = company_id
+        request.user.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class CompanyRetrieveUpdateApiView(generics.GenericAPIView):
