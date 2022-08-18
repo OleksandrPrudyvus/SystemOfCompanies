@@ -12,6 +12,13 @@ class IsCompanyWorker(permissions.BasePermission):
     def has_permission(self, request, view):
         return bool(request.user and request.user.is_worker)
 
+    def has_object_permission(self, request, view, obj):
+        return bool(
+            request.user.is_worker
+            and obj.company_id == request.user.company_id
+            and obj.office_id == request.user.office_id
+        )
+
 
 class OnlyCompanyAdmin(IsCompanyAdmin, permissions.BasePermission):
     """Provides model editing rights only to company administrators"""
