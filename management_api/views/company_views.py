@@ -19,6 +19,7 @@ class CompanyCreateApiView(generics.GenericAPIView):
         serializer.save()
         company_id = Company.objects.latest('id').id
         request.user.company_id = company_id
+        request.user.is_company_admin_user = True
         request.user.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
