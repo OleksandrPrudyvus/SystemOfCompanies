@@ -9,8 +9,8 @@ class Vehicle(models.Model):
     model = models.CharField(max_length=255)
     year_of_manufacture = models.CharField(max_length=255)
     company = models.ForeignKey('Company', on_delete=models.CASCADE)
-    office = models.ForeignKey('Office', on_delete=models.CASCADE)
-    user = models.ManyToManyField('User', blank=True, null=True)
+    office = models.ForeignKey('Office', on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ManyToManyField('User', blank=True)
 
     def __str__(self):
         return f'{self.company}-{self.office}-{self.name}-{self.model}'
