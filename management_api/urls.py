@@ -11,7 +11,8 @@ urlpatterns = [
     path('my-company/my-profile/', views.ProfileRetrieveUpdateApiView().as_view()),  # for workers
     path('my-company/office/', views.OfficeListCreateApiView().as_view()),  # for company_admin
     path('my-company/office/<int:id>/', views.OfficeRetrieveUpdateDestroyApiView().as_view(), name='retrieve_office'), # for company_admin
-    path('my-company/my-profile/my-office', views.ProfileOfficeRetrieveApiView().as_view()),  # for workers
+    path('my-company/office/<int:id>/assign-worker/<int:wk_id>/', views.AssignWorkerApiView().as_view()), # for company_admin
+    path('my-company/my-profile/my-office/', views.ProfileOfficeRetrieveApiView().as_view()),  # for workers
     path('my-company/vehicle/', views.VehicleListCreateApiView().as_view()), # for company_admin
     path('my-company/vehicle/<int:id>/', views.VehicleRetrieveUpdateDestroyApiView().as_view()),  # for company_admin
     path('my-company/my-profile/vehicle/', views.ProfileVehicleRetrieveApiView().as_view())  # for company_worker

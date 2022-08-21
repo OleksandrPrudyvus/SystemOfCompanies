@@ -9,4 +9,4 @@ class BaseOfficeSerializer(GetUserCompanyMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Office
-        fields = ('name', 'address', 'country', 'city', 'region', 'url', 'company')
+        fields = ('id', 'name', 'address', 'country', 'city', 'region', 'url', 'company')

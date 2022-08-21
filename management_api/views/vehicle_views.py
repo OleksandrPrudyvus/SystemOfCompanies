@@ -10,11 +10,15 @@ class VehicleListCreateApiView(CheckUserIsOfficeStaffMixin, generics.ListCreateA
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
     permission_classes = (OnlyCompanyAdmin,)
+    filterset_fields = ['office', 'user']
 
     def post(self, request, *args, **kwargs):
         if not self.check_office_staff(request, *args, **kwargs):
             return Response({'msg': f'User is not office worker'})
         return self.create(request, *args, **kwargs)
+
+    def get_queryset(self):
+        return Vehicle.objects.filter(company_id=self.request.user.company_id)
 
 
 class VehicleRetrieveUpdateDestroyApiView(CheckUserIsOfficeStaffMixin, generics.RetrieveUpdateDestroyAPIView):
@@ -34,12 +38,10 @@ class VehicleRetrieveUpdateDestroyApiView(CheckUserIsOfficeStaffMixin, generics.
         return super().patch(request, *args, **kwargs)
 
 
-class ProfileVehicleRetrieveApiView(generics.GenericAPIView):
+class ProfileVehicleRetrieveApiView(generics.ListAPIView):
     permission_classes = (IsCompanyWorker,)
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
 
-    def get(self, request):
-        instance = Vehicle.objects.filter(pk=request.user.office_id)
-        serializer = self.get_serializer(instance, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return Vehicle.objects.filter(user=self.request.user)

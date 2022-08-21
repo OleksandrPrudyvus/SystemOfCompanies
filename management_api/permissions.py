@@ -10,7 +10,9 @@ class IsCompanyAdmin(permissions.BasePermission):
 class IsCompanyWorker(permissions.BasePermission):
     """Provides rights only to company employees"""
     def has_permission(self, request, view):
-        return bool(request.user and request.user.is_worker)
+        if request.method in permissions.SAFE_METHODS:
+            return bool(request.user and request.user.is_worker)
+        return False
 
     def has_object_permission(self, request, view, obj):
         return bool(
@@ -31,9 +33,18 @@ class IsAdminOrWorkerReadOnly(permissions.BasePermission):
         Provides rights for models related to company_obj.
         If method Get, then it gives rights to everyone who is a worker.
         If methode (PUT or PATCH) is provided only to company administrators.
+
     """
+
     def has_object_permission(self, request, view, obj):
-        if request.method in permissions.SAFE_METHODS and request.user.is_worker \
-                and request.user.company_id == obj.company_id:
-            return True
+        if request.method in permissions.SAFE_METHODS and \
+                request.user.is_worker and request.user.company_id == obj.company_id:
+                return True
         return request.user.is_company_admin_user and obj.company_id == request.user.company_id
+
+
+class IsNotWorker(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.is_worker:
+            return False
+        return True

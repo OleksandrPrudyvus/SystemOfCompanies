@@ -5,12 +5,13 @@ from management_api.utils import GetUserCompanyMixin
 
 class VehicleSerializer(GetUserCompanyMixin, serializers.ModelSerializer):
     company = serializers.HiddenField(default=None)
-    #office = serializers.ChoiceField(required=False, choices=Office.objects.all())
-    # user = serializers.MultipleChoiceField(required=False, choices=User.objects.all())
+    office = serializers.ChoiceField(required=False, choices=Office.objects.all())
+    user = serializers.MultipleChoiceField(required=False, choices=User.objects.all())
 
     class Meta:
         model = Vehicle
         fields = (
+            'id',
             'name',
             'licence_plate',
             'model',

@@ -1,22 +1,18 @@
-from rest_framework import generics, status
-from rest_framework.response import Response
-from management_api.permissions import IsAdminOrWorkerReadOnly, OnlyCompanyAdmin, IsCompanyWorker
-from management_api.models import Office
+from rest_framework import generics, response, status
+from rest_framework.permissions import IsAuthenticated
+from management_api.permissions import OnlyCompanyAdmin, IsCompanyWorker
+from management_api.models import Office, User
 from management_api.serializers import BaseOfficeSerializer
 
-class OfficeListCreateApiView(generics.CreateAPIView):
+
+class OfficeListCreateApiView(generics.ListCreateAPIView):
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
-    permission_classes = (IsAdminOrWorkerReadOnly,)
+    permission_classes = (OnlyCompanyAdmin,)
+    filterset_fields = ['country', 'city']
 
-    def get(self, request, *args, **kwargs):
-        queryset = self.filter_queryset(self.get_queryset().filter(company_id=request.user.company_id))
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return Office.objects.filter(company_id=self.request.user.company_id)
 
 
 class OfficeRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
@@ -26,17 +22,33 @@ class OfficeRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'id'
 
 
-class ProfileOfficeRetrieveApiView(generics.GenericAPIView):
+class ProfileOfficeRetrieveApiView(generics.ListAPIView):
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
     permission_classes = (IsCompanyWorker,)
 
-    def get(self, request):
-        instance = Office.objects.get(pk=request.user.office_id)
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return Office.objects.filter(pk=self.request.user.office_id)
 
 
+class AssignWorkerApiView(generics.GenericAPIView):
+    permission_classes = (IsAuthenticated, OnlyCompanyAdmin,)
+    queryset = Office.objects.all()
 
+    def post(self, request, *args, **kwargs):
+        current_user = User.objects.get(pk=kwargs['wk_id'])
+        current_office = Office.objects.get(pk=kwargs['id'])
+
+        if current_office.company == current_user.company:
+            current_user.office_id = current_office.pk
+            current_user.save()
+            return response.Response(
+                {'msg': f'The user {current_user} is now an office worker'},
+                status=status.HTTP_200_OK
+            )
+        return response.Response(
+            {'msg': 'The user is not an employee of the company'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
 
 

@@ -1,5 +1,4 @@
 from .user_serializers import (
-    WorkerUserSerializer,
     BaseUserSerializer,
     AuthUserSerializer
 )
