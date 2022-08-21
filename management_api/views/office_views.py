@@ -1,6 +1,6 @@
 from rest_framework import generics, response, status
 from rest_framework.permissions import IsAuthenticated
-from management_api.permissions import OnlyCompanyAdmin, IsCompanyWorker
+from management_api.permissions import OnlyCompanyAdmin, IsCompanyWorker, IsAdminOrWorkerReadOnly
 from management_api.models import Office, User
 from management_api.serializers import BaseOfficeSerializer
 
@@ -8,7 +8,7 @@ from management_api.serializers import BaseOfficeSerializer
 class OfficeListCreateApiView(generics.ListCreateAPIView):
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
-    permission_classes = (OnlyCompanyAdmin,)
+    permission_classes = (IsAdminOrWorkerReadOnly,)
     filterset_fields = ['country', 'city']
 
     def get_queryset(self):

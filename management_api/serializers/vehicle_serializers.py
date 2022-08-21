@@ -1,13 +1,10 @@
 from rest_framework import serializers
 from management_api.models import Vehicle, Office, User
-from management_api.utils import GetUserCompanyMixin
+from management_api.utils import GetUserCompanyMixin, CurrentCompanyDefault
 
 
 class VehicleSerializer(GetUserCompanyMixin, serializers.ModelSerializer):
-    company = serializers.HiddenField(default=None)
-    office = serializers.ChoiceField(required=False, choices=Office.objects.all())
-    user = serializers.MultipleChoiceField(required=False, choices=User.objects.all())
-
+    company = serializers.HiddenField(default=CurrentCompanyDefault())
     class Meta:
         model = Vehicle
         fields = (

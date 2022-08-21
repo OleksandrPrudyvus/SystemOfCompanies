@@ -7,7 +7,7 @@ from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
 from rest_framework.schemas import ManualSchema
 from rest_framework.schemas import coreapi as coreapi_schema
-from management_api.permissions import IsCompanyWorker, OnlyCompanyAdmin
+from management_api.permissions import OnlyCompanyAdmin
 from management_api.models import User
 from management_api.serializers import BaseUserSerializer, AuthUserSerializer
 from management_api.utils import CheckConfirmPasswordMixin

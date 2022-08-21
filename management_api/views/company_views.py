@@ -2,7 +2,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from management_api.models import Company
-from management_api.permissions import OnlyCompanyAdmin, IsNotWorker
+from management_api.permissions import OnlyCompanyAdmin, IsNotWorker, IsAdminOrWorkerReadOnly
 from management_api.serializers import CompanySerializer
 
 
@@ -27,7 +27,7 @@ class CompanyCreateApiView(generics.GenericAPIView):
 
 class CompanyRetrieveUpdateApiView(generics.GenericAPIView):
     serializer_class = CompanySerializer
-    permission_classes = (OnlyCompanyAdmin,)
+    permission_classes = (IsAdminOrWorkerReadOnly,)
 
     def get(self, request):
         instance = Company.objects.get(pk=request.user.company_id)

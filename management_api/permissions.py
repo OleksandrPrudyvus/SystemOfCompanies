@@ -35,6 +35,10 @@ class IsAdminOrWorkerReadOnly(permissions.BasePermission):
         If methode (PUT or PATCH) is provided only to company administrators.
 
     """
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS and request.user.is_worker:
+            return True
+        return request.user.is_company_admin_user
 
     def has_object_permission(self, request, view, obj):
         if request.method in permissions.SAFE_METHODS and \

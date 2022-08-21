@@ -20,9 +20,16 @@ class CheckUserIsOfficeStaffMixin:
         return True
 
 
-class CheckOfficeIsCompanyPropertyMixin:
-    def check_company_property(self, request, *args, **kwargs):
-        pass
+class CurrentCompanyDefault:
+
+    def set_context(self, serializer_field):
+        self.company = serializer_field.context['request'].data.get('company')
+
+    def __call__(self):
+        return self.company
+
+    def __repr__(self):
+        return '%s()' % self.__class__.__name__
 
 
 class CurrentUsernameDefault:
