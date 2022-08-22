@@ -8,7 +8,7 @@
 
 1. Clone the repo: 
    
-   * `git clone https://github.com/OleksandrPrudyvus/
+   * `https://github.com/OleksandrPrudyvus/SystemOfCompanies.git`
 
 2. Run the app
   
