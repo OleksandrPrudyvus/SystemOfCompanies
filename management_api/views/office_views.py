@@ -6,6 +6,7 @@ from management_api.serializers import BaseOfficeSerializer
 
 
 class OfficeListCreateApiView(generics.ListCreateAPIView):
+    """ApiView to get(list) and create Office, accepts GET, POST method"""
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
     permission_classes = (IsAdminOrWorkerReadOnly,)
@@ -16,6 +17,7 @@ class OfficeListCreateApiView(generics.ListCreateAPIView):
 
 
 class OfficeRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
+    """ApiView to get and change Office, accepts GET, PUT, PATCH method"""
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
     permission_classes = (OnlyCompanyAdmin,)
@@ -23,6 +25,7 @@ class OfficeRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProfileOfficeRetrieveApiView(generics.ListAPIView):
+    """ApiView to get worker's Office, accepts GET method"""
     queryset = Office.objects.all()
     serializer_class = BaseOfficeSerializer
     permission_classes = (IsCompanyWorker,)
@@ -32,6 +35,7 @@ class ProfileOfficeRetrieveApiView(generics.ListAPIView):
 
 
 class AssignWorkerApiView(generics.GenericAPIView):
+    """ApiView to appoint an employee to the office, accepts POST method"""
     permission_classes = (IsAuthenticated, OnlyCompanyAdmin,)
     queryset = Office.objects.all()
 

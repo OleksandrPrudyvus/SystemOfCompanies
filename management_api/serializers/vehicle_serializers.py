@@ -4,7 +4,9 @@ from management_api.utils import GetUserCompanyMixin, CurrentCompanyDefault
 
 
 class VehicleSerializer(GetUserCompanyMixin, serializers.ModelSerializer):
+    """Serializer that is a representation of the Vehicle model"""
     company = serializers.HiddenField(default=CurrentCompanyDefault())
+
     class Meta:
         model = Vehicle
         fields = (

@@ -48,6 +48,7 @@ class IsAdminOrWorkerReadOnly(permissions.BasePermission):
 
 
 class IsNotWorker(permissions.BasePermission):
+    """Provides model editing rights only to  not company workers"""
     def has_permission(self, request, view):
         if request.user.is_worker:
             return False

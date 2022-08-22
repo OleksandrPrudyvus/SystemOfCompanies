@@ -3,6 +3,7 @@ from management_api.models import User
 
 
 class GetUserCompanyMixin:
+    """MixinClass that provides the current company"""
     def save(self, **kwargs):
         self.company = self.context.get('request').user.company
         kwargs['company'] = self.company
@@ -10,6 +11,7 @@ class GetUserCompanyMixin:
 
 
 class CheckUserIsOfficeStaffMixin:
+    """MixinClass that checks whether an employee is an office employee"""
     def check_office_staff(self, request, *args, **kwargs):
         if request.data.get('office', False) and request.data.get('user', False):
             office_instance = request.data.get('office')
@@ -21,6 +23,7 @@ class CheckUserIsOfficeStaffMixin:
 
 
 class CurrentCompanyDefault:
+    """MixinClass that provides the current company, for serializer_field"""
 
     def set_context(self, serializer_field):
         self.company = serializer_field.context['request'].data.get('company')
@@ -33,6 +36,7 @@ class CurrentCompanyDefault:
 
 
 class CurrentUsernameDefault:
+    """MixinClass that provides the current name, for serializer_field"""
     def set_context(self, serializer_field):
         self.data = serializer_field.context['request'].data
         self.username = str(self.data.get('first_name'))+str(self.data.get('last_name'))
@@ -45,6 +49,7 @@ class CurrentUsernameDefault:
 
 
 class CheckConfirmPasswordMixin:
+    """MixinClass that provides password validation"""
 
     def check_confirm_password(self, request) -> bool:
         password = request.data.get('password')

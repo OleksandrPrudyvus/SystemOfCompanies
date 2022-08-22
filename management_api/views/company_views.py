@@ -2,11 +2,12 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from management_api.models import Company
-from management_api.permissions import OnlyCompanyAdmin, IsNotWorker, IsAdminOrWorkerReadOnly
+from management_api.permissions import IsNotWorker, IsAdminOrWorkerReadOnly
 from management_api.serializers import CompanySerializer
 
 
 class CompanyCreateApiView(generics.GenericAPIView):
+    """ApiView for creates a new company, accepts a POST method"""
     queryset = Company
     serializer_class = CompanySerializer
     permission_classes = (IsAuthenticated, IsNotWorker)
@@ -26,6 +27,7 @@ class CompanyCreateApiView(generics.GenericAPIView):
 
 
 class CompanyRetrieveUpdateApiView(generics.GenericAPIView):
+    """ApiView to get and change company, accepts GET, PUT, PATCH method"""
     serializer_class = CompanySerializer
     permission_classes = (IsAdminOrWorkerReadOnly,)
 

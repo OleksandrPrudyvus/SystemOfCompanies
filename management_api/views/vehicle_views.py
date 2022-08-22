@@ -7,6 +7,8 @@ from management_api.utils import CheckUserIsOfficeStaffMixin
 
 
 class VehicleListCreateApiView(CheckUserIsOfficeStaffMixin, generics.ListCreateAPIView):
+    """ApiView for get(list) and create Vehicle, accepts a GET, POST method"""
+
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
     permission_classes = (OnlyCompanyAdmin,)
@@ -26,6 +28,8 @@ class VehicleListCreateApiView(CheckUserIsOfficeStaffMixin, generics.ListCreateA
 
 
 class VehicleRetrieveUpdateDestroyApiView(CheckUserIsOfficeStaffMixin, generics.RetrieveUpdateDestroyAPIView):
+    """ApiView for get and change vehicle, accepts a GET, PUT, PATCH method"""
+
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer
     permission_classes = (OnlyCompanyAdmin,)
@@ -43,6 +47,8 @@ class VehicleRetrieveUpdateDestroyApiView(CheckUserIsOfficeStaffMixin, generics.
 
 
 class ProfileVehicleRetrieveApiView(generics.ListAPIView):
+    """ApiView for get my vehicles, accepts a GET method"""
+
     permission_classes = (IsCompanyWorker,)
     queryset = Vehicle.objects.all()
     serializer_class = VehicleSerializer

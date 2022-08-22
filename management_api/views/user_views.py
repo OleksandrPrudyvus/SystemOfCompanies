@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework import generics, status, parsers, renderers, filters
+from rest_framework import generics, status, parsers, renderers
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.compat import coreapi, coreschema
@@ -14,6 +14,8 @@ from management_api.utils import CheckConfirmPasswordMixin
 
 
 class UserRegisterApiView(CheckConfirmPasswordMixin, generics.GenericAPIView):
+    """ApiView for creates a new User, accepts a POST method"""
+
     queryset = User.objects.all()
     serializer_class = BaseUserSerializer
     permission_classes = (AllowAny,)
@@ -28,6 +30,8 @@ class UserRegisterApiView(CheckConfirmPasswordMixin, generics.GenericAPIView):
 
 
 class LoginApiView(generics.GenericAPIView):
+    """ApiView for login user, accepts a POST method"""
+
     parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
     renderer_classes = (renderers.JSONRenderer,)
     serializer_class = AuthUserSerializer
@@ -78,6 +82,8 @@ class LoginApiView(generics.GenericAPIView):
 
 
 class WorkerListCreateApiView(CheckConfirmPasswordMixin, generics.ListAPIView):
+    """ApiView for get(list) and create employees, accepts a GET, POST method"""
+
     serializer_class = BaseUserSerializer
     permission_classes = (OnlyCompanyAdmin,)
     pagination_class = LimitOffsetPagination
@@ -108,6 +114,8 @@ class WorkerListCreateApiView(CheckConfirmPasswordMixin, generics.ListAPIView):
 
 # доробити
 class WorkerRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
+    """ApiView for get and change employee instance, accepts a GET, PUT, PATCH method"""
+
     queryset = User.objects.all()
     serializer_class = BaseUserSerializer
     lookup_field = 'id'
@@ -115,6 +123,7 @@ class WorkerRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ProfileRetrieveUpdateApiView(CheckConfirmPasswordMixin, generics.RetrieveUpdateAPIView):
+    """ApiView for get and change my profile, accepts a GET, PUT, PATCH method"""
     queryset = User.objects.all()
     serializer_class = BaseUserSerializer
     permission_classes = (IsAuthenticated,)

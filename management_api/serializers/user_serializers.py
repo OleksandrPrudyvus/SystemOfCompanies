@@ -5,6 +5,7 @@ from management_api.utils import CurrentUsernameDefault
 
 
 class BaseUserSerializer(serializers.ModelSerializer):
+    """Base Serializer that is a representation of the User model"""
     repeat_password = serializers.CharField(max_length=128, write_only=True)
     username = serializers.HiddenField(default=CurrentUsernameDefault())
 
@@ -36,7 +37,9 @@ class BaseUserSerializer(serializers.ModelSerializer):
             'password': {'write_only': True},
         }
 
+
 class AuthUserSerializer(serializers.Serializer):
+    """Serializer that is a representation of the user model and is used for authorization"""
     email = serializers.CharField(label=("email"), write_only=True)
     password = serializers.CharField(
         label=("Password"),
@@ -45,6 +48,7 @@ class AuthUserSerializer(serializers.Serializer):
         write_only=True
     )
     token = serializers.CharField(label=("Token"), read_only=True)
+
     def validate(self, attrs):
         email = attrs.get('email')
         password = attrs.get('password')
@@ -52,7 +56,6 @@ class AuthUserSerializer(serializers.Serializer):
         if email and password:
             user = authenticate(request=self.context.get('request'),
                                 username=email, password=password)
-
             if not user:
                 msg = ('Unable to log in with provided credentials.')
                 raise serializers.ValidationError(msg, code='authorization')
