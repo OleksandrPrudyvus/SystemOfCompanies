@@ -13,6 +13,8 @@
 2. Run the app
   
   * `docker-compose up`
+  * `docker-compose run web python3 manage.py migrate`
+  * `docker-compose up`
   
 ***
 ##### After these steps you should see the home page of the application
