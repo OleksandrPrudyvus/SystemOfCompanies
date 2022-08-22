@@ -1,3 +1,13 @@
 venv
 .idea
 backends/__pycache__/
+system_of_companies/__pycache__/
+management_api/tests
+management_api/tests.py
+management_api/__pycache__/
+management_api/migrations/__pycache__/
+management_api/models/__pycache__/
+management_api/serializers/__pycache__/
+management_api/views/__pycache__/
+__pycache__/
+data
