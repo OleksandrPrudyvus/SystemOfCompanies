@@ -33,11 +33,56 @@ This is a web application that implements the display and management of a compan
 The REST API to the example app is described below.
 
 # Implemented url paths:
-### /register/
-  `HTTP requests:
-   * POST - create new user`
-### /login/
-  `HTTP requests:
-    * POST - login user`
 
-  
+### /register/
+   * POST - Create new user.
+
+### /login/
+  * POST - Login user.
+
+ ### /company/ 
+  * POST - Create a company if you don't have any roles.
+
+### /my-company/ 
+  * GET - View your company.
+  * PUT/PATCH - Change your company data if your role is CompanyAdmin.
+
+### /my-company/workers/ - For CompanyAdmin.
+  * GET - List of worker.
+  * POST - Create new worker.
+
+### /my-company/workers/<int:id>/ - For CompanyAdmin.
+  * GET - Get worker.
+  * PUT/PATCH - Change worker data.
+  * DELETE - Delete worker.
+
+### /my-company/my-profile/ 
+  * GET - View your profile.
+  * PUT/PATCH - Update your data.
+
+### /my-company/office/ - For CompanyAdmin. 
+  * GET - List of office.
+  * POST - Create new office.
+
+### /my-company/office/<int:id>/ - For CompanyAdmin. 
+  * GET - Get office.
+  * PUT/PATCH - Change office data.
+  * DELETE - Delete office.
+ 
+### /my-company/office/<int:id>/assign-worker/<int:wk_id>/ - For CompanyAdmin. 
+  * POST - Assign worker in the office.
+
+### /my-company/my-profile/my-office/ - For company Worker.
+  * GET - View your office.
+
+### /my-company/vehicle/ - For CompanyAdmin.
+  * GET - List of vehicle.
+  * POST - Create new vehicle.
+
+### /my-company/vehicle/<int:id>/ - For CompanyAdmin.
+  * GET - View of vehicle.
+  * PUT/PATCH - Change vehicle data.
+  * DELETE - Delete vehicle.
+
+### /my-company/my-profile/vehicle/ - For company Worker.
+  * GET - List of employee's vehicle.
