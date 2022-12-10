@@ -30,13 +30,14 @@ This is a web application that implements the display and management of a compan
 
 ***
 # REST API
-
 The REST API to the example app is described below.
-***
+
 # Implemented url paths:
 ### /register/
-  *`HTTP requests:
-    POST - create new user`
-  
+  `HTTP requests:
+   * POST - create new user`
+### /login/
+  `HTTP requests:
+    * POST - login user`
 
   
