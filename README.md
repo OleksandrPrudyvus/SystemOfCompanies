@@ -27,3 +27,16 @@ This is a web application that implements the display and management of a compan
   
 ***
 ##### After these steps you should see the home page of the application
+
+***
+# REST API
+
+The REST API to the example app is described below.
+***
+# Implemented url paths:
+### /register/
+  *`HTTP requests:
+    POST - create new user`
+  
+
+  
